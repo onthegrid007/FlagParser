@@ -40,6 +40,5 @@ namespace FlagParser {
         Parser();
         vector<Token> m_tokens;
         bool m_parsed;
-
-    }
+    };
 }
