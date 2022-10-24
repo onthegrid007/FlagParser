@@ -5,14 +5,13 @@
 *   Other Contributers:
 */
 
-#include <singleton/singleton.hpp>
 #include <string>
 #include <vector>
 
 namespace FlagParser {
     typedef struct {
         std::string argument;
-        vector<std::string> params;
+        std::vector<std::string> params;
 
         Token(std::string argument) :
             argument(argument) {}
@@ -25,20 +24,18 @@ namespace FlagParser {
         }
     } Token;
 
-    class Parser : public Singleton<Parser> {
+    class Parser{
         public:
-        static void Parse(int& argc, char** argv);
-        static const vector<string>& getParams(std::string argument) const;
-        static const std::string getArgvZ() const;
+        Parser(int& argc, char** argv);
+        const std::vector<string>& getParams(std::string argument) const;
+        const std::string getArgvZ() const;
         bool paramsExist(std::string argument) const;
         bool noTokens() const;
     	Token& operator[](const size_t idx);
     	static const Token EmptyToken;
 
         private:
-        _SINGLETON_CHILD_DECLORATIONS(Parser);
-        Parser();
-        vector<Token> m_tokens;
+        std::vector<Token> m_tokens;
         bool m_parsed;
     };
 }
