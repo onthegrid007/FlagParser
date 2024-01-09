@@ -18,9 +18,9 @@ namespace FlagParser {
     
     class Parser {
         public:
-        static const Token EmptyToken{""};
+        inline static const Token EmptyToken{""};
         Parser(int& argc, char** argv) {
-            if(!argc || !(argv[argc])) return;
+            if(!argc) return;
             m_tokens.emplace_back(argv[0]);
             for(int i{1}; i < argc; i++) {
                 std::string str{argv[i]};
@@ -32,6 +32,12 @@ namespace FlagParser {
                     m_tokens.back().params.emplace_back(str);
                 }
             }
+        }
+        
+        const bool hasFlag(const std::string flag) const {
+            for(auto itt{m_tokens.begin()}; itt != m_tokens.end(); itt++)
+                if((*itt).flag == flag) return true;
+            return false;
         }
         
         const std::vector<std::string>& getFlagParams(const std::string flag) const {
@@ -46,7 +52,7 @@ namespace FlagParser {
             return EmptyToken.flag;
         }
         
-    	Token& operator[](const size_t idx) {
+    	const Token& operator[](const size_t idx) const {
             if(m_tokens.size() > 0 && m_tokens.size() > idx)
                 return m_tokens[idx];
             return EmptyToken;
